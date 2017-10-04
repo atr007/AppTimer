@@ -7,29 +7,53 @@ import android.os.Bundle;
 
 public class StartActivity extends AppCompatActivity {
 
+    private int mRate = 1000;
+    private int startDelay = 5000;
+    private long currentTime;
     private CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        if(savedInstanceState == null){
-            timer = new CountDownTimer(2000, 1000){
-                public void onTick(long millisUntilFinished){};
-                public void onFinish(){
-                    Intent intent = new Intent(StartActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }.start();
-        }
+
+    }
+
+    public void onStart(){
+        super.onStart();
+        newTimer(startDelay);
+        timer.start();
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceState){
         super.onRestoreInstanceState(savedInstanceState);
+        startDelay = (int)savedInstanceState.getLong("currentTime");
     }
 
     public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putLong("currentTime", currentTime);
+        timer.cancel();
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+    public void onStop(){
+        timer.cancel();
+        super.onStop();
+    }
+
+    public void newTimer(long newTime){
+        timer = new CountDownTimer(newTime, mRate) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                currentTime = millisUntilFinished;
+            }
+
+            @Override
+            public void onFinish() {
+                Intent intent = new Intent(StartActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
     }
 }

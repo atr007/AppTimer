@@ -17,6 +17,10 @@ public class MainActivity extends AppCompatActivity {
     private int time;
     private long currentTime;
     private long t0;
+    private String strStart;
+    private String strStop;
+    private int maxTime = 1002;
+    private int mRate = 1000;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -25,8 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
         mTextView = (TextView)findViewById(R.id.textView);
         mButton = (Button)findViewById(R.id.button);
-        mButton.setText("Start");
-        time = 1002*1000;
+        strStart = getString(R.string.start_button);
+        strStop = getString(R.string.stop_button);
+        mButton.setText(strStart);
+        time = maxTime*mRate;
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceState){
@@ -35,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             t0 = savedInstanceState.getLong("currentTime");
             mBool = savedInstanceState.getBoolean("mBool");
             if(mBool) {
-                mButton.setText("Stop");
+                mButton.setText(strStop);
                 newTimer(time - t0);
                 timer.start();
             }
@@ -52,10 +58,20 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
     }
 
+    public void onStop(){
+        if(mBool) {
+            timer.cancel();
+            mButton.setText(strStart);
+            mBool = false;
+            mTextView.setText("");
+        }
+            super.onStop();
+    }
+
     public void onButtonClick(View view){
         if(mBool) {
             timer.cancel();
-            mButton.setText("Start");
+            mButton.setText(strStart);
             mBool = false;
             mTextView.setText("");
         }
@@ -63,23 +79,23 @@ public class MainActivity extends AppCompatActivity {
             t0 = 0;
             newTimer(time);
             timer.start();
-            mButton.setText("Stop");
+            mButton.setText(strStop);
             mBool = true;
         }
     }
 
     public void newTimer(long newTime){
-        timer = new CountDownTimer(newTime, 1000) {
+        timer = new CountDownTimer(newTime, mRate) {
             @Override
             public void onTick(long millisUntilFinished) {
                 currentTime = time - millisUntilFinished;
-                writeNum((short)((time - millisUntilFinished)/1000));
+                writeNum((short)((time - millisUntilFinished)/mRate));
             }
 
             @Override
             public void onFinish() {
                 mTextView.setText("");
-                mButton.setText("Start");
+                mButton.setText(strStart);
                 mBool = false;
             }
         };
