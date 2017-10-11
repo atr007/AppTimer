@@ -37,18 +37,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void onRestoreInstanceState(Bundle savedInstanceState){
         super.onRestoreInstanceState(savedInstanceState);
-        if(savedInstanceState != null){
-            t0 = savedInstanceState.getLong("currentTime");
-            mBool = savedInstanceState.getBoolean("mBool");
-            if(mBool) {
-                mButton.setText(strStop);
-                newTimer(time - t0);
-                timer.start();
-            }
-        }
-        else{
-            t0 = time;
-            mBool = false;
+        t0 = savedInstanceState.getLong("currentTime");
+        mBool = savedInstanceState.getBoolean("mBool");
+        if(mBool) {
+            mButton.setText(strStop);
+            newTimer(time - t0);
+            timer.start();
         }
     }
 
@@ -58,12 +52,13 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
     }
 
+
     public void onStop(){
         if(mBool) {
             timer.cancel();
-            mButton.setText(strStart);
-            mBool = false;
-            mTextView.setText("");
+            //mButton.setText(strStart);
+            //mBool = false;
+            //mTextView.setText("");
         }
             super.onStop();
     }

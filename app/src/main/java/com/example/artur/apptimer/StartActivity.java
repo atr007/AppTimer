@@ -8,7 +8,7 @@ import android.os.Bundle;
 public class StartActivity extends AppCompatActivity {
 
     private int mRate = 1000;
-    private int startDelay = 5000;
+    private int startDelay = 2000;
     private long currentTime;
     private CountDownTimer timer;
 
@@ -32,7 +32,6 @@ public class StartActivity extends AppCompatActivity {
 
     public void onSaveInstanceState(Bundle savedInstanceState){
         savedInstanceState.putLong("currentTime", currentTime);
-        timer.cancel();
         super.onSaveInstanceState(savedInstanceState);
     }
 
