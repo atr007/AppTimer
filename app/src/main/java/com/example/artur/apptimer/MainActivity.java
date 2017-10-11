@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     private String strStop;
     private int maxTime = 1002;
     private int mRate = 1000;
-    
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
